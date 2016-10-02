@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(OpenCV)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -112,32 +112,36 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
+include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(road_mark_detector
-#   src/${PROJECT_NAME}/road_mark_detector.cpp
-# )
-
+add_library(IPM
+  src/IPM.cpp
+)
+target_link_libraries(IPM
+  ${OpenCV_LIBS}
+)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 # add_dependencies(road_mark_detector ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(road_mark_detector_node src/road_mark_detector_node.cpp)
+add_executable(road_mark_detector_node src/road_mark_detector_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(road_mark_detector_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(road_mark_detector_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(road_mark_detector_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(road_mark_detector_node
+  IPM
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+)
 
 #############
 ## Install ##
